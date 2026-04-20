@@ -1,7 +1,7 @@
 import React from 'react';
 import '../styles/auth-shared.css';
 import { useNavigate } from 'react-router-dom';
-import api from '../services/api.js';
+import api, { setAuthToken } from '../services/api.js';
 
 const FoodPartnerLogin = () => {
 
@@ -15,6 +15,7 @@ const FoodPartnerLogin = () => {
 
     try {
       const response = await api.post('auth/food-partner/login', { email, password });
+      setAuthToken(response?.data?.token);
       console.log(response.data);
       navigate('/homepage'); // Redirect to reel feed after login
     } catch (error) {

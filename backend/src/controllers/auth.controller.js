@@ -103,7 +103,7 @@ async function registerUser(req, res) {
         const token = jwt.sign({ id: newUser._id }, process.env.jwt_secret, { expiresIn: '1h' });
         setAuthCookie(res, token);
         await newUser.save();
-        res.status(201).json({ message: 'User registered successfully', user: {
+        res.status(201).json({ message: 'User registered successfully', token, user: {
             name: newUser.name,
             username: newUser.username,
             email: newUser.email,
@@ -140,7 +140,7 @@ async function loginUser(req, res) {
         }
         const token = jwt.sign({ id: user._id }, process.env.jwt_secret, { expiresIn: '1h' });
         setAuthCookie(res, token);
-        res.status(200).json({ message: 'Login successful', user: {
+        res.status(200).json({ message: 'Login successful', token, user: {
             name: user.name,
             username: user.username,
             email: user.email,
@@ -284,7 +284,7 @@ async function registerFoodPartner(req, res) {
 
         const token = jwt.sign({ id: newFoodPartner._id }, process.env.jwt_secret, { expiresIn: '1h' });
         setAuthCookie(res, token);
-        res.status(201).json({ message: 'Food Partner registered successfully', foodPartner: {
+        res.status(201).json({ message: 'Food Partner registered successfully', token, foodPartner: {
             id: newFoodPartner._id,
             name: newFoodPartner.name,
             contactName: newFoodPartner.contactName,
@@ -318,7 +318,7 @@ async function loginFoodPartner(req, res) {
         }
         const token = jwt.sign({ id: foodPartner._id }, process.env.jwt_secret, { expiresIn: '1h' });
         setAuthCookie(res, token);
-        res.status(200).json({ message: 'Login successful', foodPartner: {
+        res.status(200).json({ message: 'Login successful', token, foodPartner: {
             id: foodPartner._id,
             name: foodPartner.name,
             username: foodPartner.username,

@@ -2,8 +2,20 @@ const FoodPartnerModel = require("../models/foodpartner.models");
 const UserModel = require("../models/user.models");
 const jwt = require("jsonwebtoken");
 
+function getTokenFromRequest(req) {
+    const cookieToken = req.cookies && req.cookies.token;
+    if (cookieToken) return cookieToken;
+
+    const authHeader = req.headers && req.headers.authorization;
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+        return authHeader.slice(7).trim();
+    }
+
+    return null;
+}
+
 async function authFoodPartnerMiddleware(req, res, next) {
-    const token = req.cookies && req.cookies.token;
+    const token = getTokenFromRequest(req);
     if (!token) {
         return res.status(401).json({ message: 'please login first' });
     }
@@ -21,7 +33,7 @@ async function authFoodPartnerMiddleware(req, res, next) {
 }
 
 async function authUserMiddleware(req, res, next) {
-    const token = req.cookies && req.cookies.token;
+    const token = getTokenFromRequest(req);
     if (!token) {
         return res.status(401).json({ message: 'please login first' });
     }
@@ -39,7 +51,7 @@ async function authUserMiddleware(req, res, next) {
 }
 
 async function authGeneralMiddleware(req, res, next) {
-    const token = req.cookies && req.cookies.token;
+    const token = getTokenFromRequest(req);
     if (!token) {
         return res.status(401).json({ message: 'please login first' });
     }

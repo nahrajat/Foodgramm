@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import '../styles/top-profile-menu.css'
-import api from '../services/api.js'
+import api, { clearAuthToken } from '../services/api.js'
 
 const TopProfileMenu = () => {
   const navigate = useNavigate()
@@ -114,6 +114,7 @@ const TopProfileMenu = () => {
       // Treat logout as best effort. We still redirect.
     }
 
+    clearAuthToken()
     setIsOpen(false)
     setSession({ loading: false, role: null, name: '', profileId: '', profilePhoto: '' })
     navigate('/')

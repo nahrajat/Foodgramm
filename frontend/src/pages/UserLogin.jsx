@@ -1,7 +1,7 @@
 import React from 'react';
 import '../styles/auth-shared.css';
 import { useNavigate } from 'react-router-dom';
-import api from '../services/api.js';
+import api, { setAuthToken } from '../services/api.js';
 
 const UserLogin = () => {
 
@@ -15,6 +15,7 @@ const UserLogin = () => {
 
     try {
       const response = await api.post("auth/user/login", { email, password });
+      setAuthToken(response?.data?.token);
       console.log(response.data);
       navigate("/homepage"); // Redirect to home after login
     } catch (error) {
