@@ -1,0 +1,14 @@
+/* Local navbar styles to ensure links are white without touching global theme variables */
+.navbar {
+  /* keep the existing backdrop and layout, only set link colors */
+  display: block;
+}
+.navbar a,
+.navbar a:link,
+.navbar a:visited {
+  color: #ffffff !important;
+}
+.navbar a:hover,
+.navbar a:focus {
+  color: #dc1010 !important; /* light gray on hover */
+}
