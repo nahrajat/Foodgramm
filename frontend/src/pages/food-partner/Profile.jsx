@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import '../../styles/profile.css'
 import { useNavigate, useParams } from 'react-router-dom'
-import axios from 'axios'
+import api from '../../services/api.js'
 
 const Profile = () => {
     const { id } = useParams()
@@ -122,7 +122,7 @@ const Profile = () => {
                 formData.append('removeProfilePhoto', 'true')
             }
 
-            const response = await axios.put('/api/food-partner/me', formData, { withCredentials: true })
+            const response = await api.put('food-partner/me', formData)
             const updatedPartner = response?.data?.foodPartner
             setProfile((prev) => prev ? { ...prev, profilePhoto: updatedPartner?.profilePhoto || '' } : prev)
             setEditProfilePhotoFile(null)
@@ -142,7 +142,7 @@ const Profile = () => {
         if (!confirmed) return
 
         try {
-            await axios.delete(`/api/food/${foodId}`, { withCredentials: true })
+            await api.delete(`food/${foodId}`)
             setVideos((prev) => prev.filter((item) => item._id !== foodId))
             if (selectedFood?._id === foodId) {
                 cancelEditing()
@@ -168,9 +168,7 @@ const Profile = () => {
         }
 
         try {
-            const response = await axios.put(`/api/food/${selectedFood._id}`, formData, {
-                withCredentials: true,
-            })
+            const response = await api.put(`food/${selectedFood._id}`, formData)
             setVideos((prev) => prev.map((item) => (item._id === selectedFood._id ? response.data.food : item)))
             setSelectedFood(response.data.food)
             setEditName(response.data.food.name || '')
@@ -193,14 +191,14 @@ const Profile = () => {
     useEffect(() => {
         let isMounted = true
 
-        axios.get(`/api/food-partner/${id}`, { withCredentials: true })
+        api.get(`food-partner/${id}`)
             .then(response => {
                 if (!isMounted) return
                 setProfile(response.data.foodPartner)
                 setVideos(response.data.foodPartner.foodItems)
             })
 
-        axios.get('/api/food-partner/me', { withCredentials: true })
+        api.get('food-partner/me')
             .then(response => {
                 if (!isMounted) return
                 setIsOwner(String(response.data.foodPartner._id) === String(id))

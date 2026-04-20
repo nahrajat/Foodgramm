@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import axios from 'axios'
+import api from '../../services/api.js'
 
 const UserProfile = () => {
   const [profile, setProfile] = useState(null)
@@ -14,7 +14,7 @@ const UserProfile = () => {
   useEffect(() => {
     let isMounted = true
 
-    axios.get('/api/auth/user/me', { withCredentials: true })
+    api.get('auth/user/me')
       .then((response) => {
         if (!isMounted) return
         const user = response?.data?.user || null
@@ -79,7 +79,7 @@ const UserProfile = () => {
         formData.append('removeProfilePhoto', 'true')
       }
 
-      const response = await axios.put('/api/auth/user/me', formData, { withCredentials: true })
+      const response = await api.put('auth/user/me', formData)
       const updatedUser = response?.data?.user
       setProfile(updatedUser)
       setEditName(updatedUser?.name || '')

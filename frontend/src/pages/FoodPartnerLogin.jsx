@@ -1,7 +1,7 @@
 import React from 'react';
 import '../styles/auth-shared.css';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import api from '../services/api.js';
 
 const FoodPartnerLogin = () => {
 
@@ -14,7 +14,7 @@ const FoodPartnerLogin = () => {
     const password = e.target.password.value;
 
     try {
-      const response = await axios.post('/api/auth/food-partner/login', { email, password }, { withCredentials: true });
+      const response = await api.post('auth/food-partner/login', { email, password });
       console.log(response.data);
       navigate('/homepage'); // Redirect to reel feed after login
     } catch (error) {

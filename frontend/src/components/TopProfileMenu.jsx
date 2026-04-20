@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
-import axios from 'axios'
 import { useLocation, useNavigate } from 'react-router-dom'
 import '../styles/top-profile-menu.css'
+import api from '../services/api.js'
 
 const TopProfileMenu = () => {
   const navigate = useNavigate()
@@ -21,7 +21,7 @@ const TopProfileMenu = () => {
 
     const detectSession = async () => {
       try {
-        const partnerRes = await axios.get('/api/food-partner/me', { withCredentials: true })
+        const partnerRes = await api.get('food-partner/me')
         if (!isMounted) return
         const partner = partnerRes?.data?.foodPartner
         setSession({
@@ -37,7 +37,7 @@ const TopProfileMenu = () => {
       }
 
       try {
-        const userRes = await axios.get('/api/auth/user/me', { withCredentials: true })
+        const userRes = await api.get('auth/user/me')
         if (!isMounted) return
         const user = userRes?.data?.user
         setSession({
@@ -106,9 +106,9 @@ const TopProfileMenu = () => {
   const logout = async () => {
     try {
       if (session.role === 'food-partner') {
-        await axios.get('/api/auth/food-partner/logout', { withCredentials: true })
+        await api.get('auth/food-partner/logout')
       } else {
-        await axios.get('/api/auth/user/logout', { withCredentials: true })
+        await api.get('auth/user/logout')
       }
     } catch {
       // Treat logout as best effort. We still redirect.

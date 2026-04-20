@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/auth-shared.css';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import api from '../services/api.js';
 
 const FoodPartnerRegister = () => {
 
@@ -33,7 +33,7 @@ const FoodPartnerRegister = () => {
       formData.append('profilePhoto', profilePhoto);
     }
 
-    axios.post("/api/auth/food-partner/register", formData, { withCredentials: true }) // Added withCredentials for cookie handling
+    api.post("auth/food-partner/register", formData) // Added withCredentials for cookie handling
       .then(response => {
         console.log(response.data);
         navigate("/homepage"); // Redirect to reel feed after successful registration
